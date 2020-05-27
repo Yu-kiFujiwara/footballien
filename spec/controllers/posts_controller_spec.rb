@@ -3,26 +3,26 @@ require 'rails_helper'
 describe PostsController, type: :controller do
     render_views
     let(:user) { create(:user) }
-    let(:post) { create(:post, user:user) }
+    let(:tweet) { create(:post, user:user) }
     let(:posts){ user.posts }
 
     # インスタンス変数 post を設定
     before :each do
-        instance_variable_set(:@post, post)
+        instance_variable_set(:@post, tweet)
     end
 
     describe 'GET#index' do
         context 'ログインできた場合' do
             before do
                 login_user(user)
-                post
+                tweet
             end
             it 'ページの表示を確認' do
-                get :index, params: { id: post.id }
+                get :index, params: { id: tweet.id }
                 expect(response).to be_success
             end
             it 'ログイン後投稿一覧ページが表示されているか' do
-                get :index, params: { id: post.id }
+                get :index, params: { id: tweet.id }
                 expect(response).to have_http_status '200'
             end
         end
@@ -87,7 +87,8 @@ describe PostsController, type: :controller do
             before do
                 user
             end
-            let(:params){ :post }
+            let(:params){ '新規投稿' }
+            
             it 'ログインページへ遷移' do
                 post :create, params: { post: params }
                 expect(response).to redirect_to ("/users/sign_in")
@@ -99,14 +100,14 @@ describe PostsController, type: :controller do
         context 'ログイン後、詳細画面を表示' do
             before do
                 login_user(user)
-                post
+                tweet
             end
             it '詳細画面を表示' do
-                get :show, params: { id: post.id }
+                get :show, params: { id: tweet.id }
                 expect(response).to render_template :show
             end
             it '200レスポンスが返ってきているか' do
-                get :show, params: { id: post.id }
+                get :show, params: { id: tweet.id }
                 expect(response).to be_success
             end
         end
@@ -115,7 +116,7 @@ describe PostsController, type: :controller do
                 user
             end
             it 'ログインページへ遷移' do
-                get :show, params: { id: post.id }
+                get :show, params: { id: tweet.id }
                 expect(response).to redirect_to ("/users/sign_in")
             end
         end
@@ -125,14 +126,14 @@ describe PostsController, type: :controller do
         context 'ログイン後、編集画面を表示' do
             before do
                 login_user(user)
-                post
+                tweet
             end
             it '編集画面を表示' do
-                get :edit, params: { id: post.id }
+                get :edit, params: { id: tweet.id }
                 expect(response).to render_template :edit
             end
             it '200レスポンスが返ってきているか' do
-                get :edit, params: { id: post.id }
+                get :edit, params: { id: tweet.id }
                 expect(response).to be_success
             end
         end
@@ -141,7 +142,7 @@ describe PostsController, type: :controller do
                 user
             end
             it 'ログインページへ遷移' do
-                get :edit, params: { id: post.id }
+                get :edit, params: { id: tweet.id }
                 expect(response).to redirect_to ("/users/sign_in")
             end
         end
@@ -152,17 +153,17 @@ describe PostsController, type: :controller do
         context 'ログイン後、編集画面から受け取り、更新できた場合' do
             before do
                 login_user(user)
-                post
+                tweet
             end
             it '投稿を編集し、保存を確認' do
-                patch :update, params: { id: post.id, post: post_params }
+                patch :update, params: { id: tweet.id, post: post_params }
                 expect(@post.reload.content).to eq '編集済'
             end
             it '投稿編集したが、投稿数は変化なし' do
-                expect{ patch :update, params: { id: post.id, post: post_params } }.to change{ Post.count }.by(0)
+                expect{ patch :update, params: { id: tweet.id, post: post_params } }.to change{ Post.count }.by(0)
             end
             it '一覧画面へ遷移' do
-                patch :update, params: { id: post.id, post: post_params }
+                patch :update, params: { id: tweet.id, post: post_params }
                 expect(response).to redirect_to ("/posts")
             end
         end
@@ -171,7 +172,7 @@ describe PostsController, type: :controller do
                 user
             end
             it 'ログインページへ遷移' do
-                patch :update, params: { id: post.id, post: post_params }
+                patch :update, params: { id: tweet.id, post: post_params }
                 expect(response).to redirect_to ("/users/sign_in")
             end
         end
@@ -181,13 +182,13 @@ describe PostsController, type: :controller do
         context 'ログイン後削除を実行した場合' do
             before do
                 login_user(user)
-                post
+                tweet
             end
             it '投稿を削除' do
-                expect{ delete :destroy, params: { id: post.id } }.to change{ Post.count }.by(-1)
+                expect{ delete :destroy, params: { id:tweet.id } }.to change{ Post.count }.by(-1)
             end
             it '削除後、ページを表示' do
-                delete :destroy, params: { id: post.id }
+                delete :destroy, params: { id: tweet.id }
                 expect(response).to redirect_to ("/posts")
             end
         end
@@ -196,7 +197,7 @@ describe PostsController, type: :controller do
                 user
             end
             it 'ログインページへ遷移' do
-                get :destroy, params: { id: post.id }
+                get :destroy, params: { id: tweet.id }
                 expect(response).to redirect_to ("/users/sign_in")
             end
         end
