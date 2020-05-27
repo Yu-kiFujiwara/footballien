@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="container-wrapper">
+        <div class="rows">
+            <h4>投稿詳細</h4>
+
+            <h5>投稿者 ： <a href="/users/<%= @post.user_id %>"><%= @post.user.name %></a></h5>
+            <p><%= @post.content %></p>
+            
+            <div id="likes_buttons_<%= @post.id %>">
+                <%= render partial: 'likes/like', locals: { post: @post } %>
+            </div>
+            <br />
+
+            <h5>コメント一覧</h5>
+            <% @comments.each do |c| %>
+                <hr>
+                <a href="/users/<%= c.user_id %>"><%= c.user.name %></a>
+                <%= c.content %>
+                <% if c.user_id == current_user.id %>
+                    <%= link_to "削除する", post_comment_path(@post, c), method: :delete, data: { confirm: "コメントを削除します、よろしいですか？" }, class: "btn btn-danger btn-sm" %>    
+                <% end %>
+            <% end %><hr>
+
+            <%= form_with(model:[@post, @comment], local: true) do |f| %>
+                <%= f.text_area :content, rows: 3, class: 'form-control' %><br />
+                <%= f.submit 'コメントする', class: 'btn btn-primary' %>
+            <% end %><br />
+
+            <% if @post.user_id == current_user.id %>
+                <%= link_to "編集する", edit_post_path, class: "btn btn-primary" %>
+                <%= link_to "削除する", @post, method: :delete, data: { confirm: "投稿を削除します、よろしいですか？" }, class: "btn btn-danger" %>
+            <% end %>
+
+            <%= link_to "戻る", posts_path, class: "btn btn-primary" %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<% if @user.job == "player" %>
+    <div class="container">
+        <div class="container-wrapper">
+            <div class="rows">
+                <% if @user.id == current_user.id %>
+                    <h3>マイページ</h3>
+                    <%= link_to "編集する", "/users/edit", class: "btn btn-primary" %>
+                <% else %>
+                    <h3><%= @user.name %>さんのページ</h3>
+                <% end %>
+
+                <%= render 'follow_form' %>
+                <%= render 'stats' %>
+                <br />
+
+                <p>メールアドレス ： <%= @user.email %>
+                <p><%= @user.sex %>
+                <p><%= @user.location %>
+
+                <p>年齢 ：
+                <% if @user.age == nil %>
+                    <a>未設定
+                <% else %>
+                    <a><%= @user.age %>歳
+                <% end %>
+
+                <p>プロフィール</h4>
+                <% if @user.introduction == nil %>
+                    <a>： 未設定
+                <% else %>
+                    <br /><a><%= @user.introduction %>
+                <% end %>
+                <br /><hr>
+                <h4>投稿一覧</h4>
+                <% @user.posts.each do |post| %>
+                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                    <hr>
+                <% end %>
+                <br />
+                <h4>いいね！している投稿</h4>
+                <% @user.liked_posts.each do |post| %>
+                    <%= post.user.name %>
+                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                    <hr>
+                <% end %>
+                <br />
+                <%= link_to "一覧", posts_path, class: "btn btn-primary" %>
+            </div>
+        </div>
+    </div>
+
+<% else @user.job == "owner" %>
+    <div class="container">
+        <div class="rows">
+            <h3><%= @user.name %>さんのページ</h3>
+            <%= link_to "マイページ編集", "/users/edit" %>
+            <p>メールアドレス ： <%= @user.email %>
+            <p><%= @user.location %>で活動
+        </div>
+    </div>
+<% end %>

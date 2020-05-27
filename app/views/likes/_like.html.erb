@@ -1,0 +1,11 @@
+<% if user_signed_in? %>
+    <% if current_user.already_liked?(post) %>
+        いいね！件数：(<%= post.liked_users.count %>)
+        <i class="fas fa-heart"><%= link_to "いいね！を取り消す", post_like_path(id: post.id, post_id: post.id), method: :delete, remote: true %></i>
+        
+    <% else %>
+        いいね！件数：(<%= post.liked_users.count %>)
+        <i class="far fa-heart"><%= link_to "いいね！", post_likes_path(post.id), method: :post, remote: true %></i>
+    <% end %>
+<% else %>
+<% end %>
