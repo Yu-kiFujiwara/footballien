@@ -16,8 +16,11 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.user_id = current_user.id
-    @post.save!
-    redirect_to posts_path, notice: "投稿しました！"
+    if @post.save
+      redirect_to posts_path, notice: "投稿しました！"
+    else
+      redirect_to new_post_path, notice: "内容を確認してください"
+    end
   end
 
   def show
@@ -28,20 +31,31 @@ class PostsController < ApplicationController
   end
 
   def edit
+    if @post.user_id == current_user.id
+    else
+      redirect_to posts_path
+    end
   end
 
   def update
     if @post.user_id == current_user.id
-      @post.update!(post_params)
-      redirect_to posts_path, notice: "投稿を編集しました"
+      if @post.update(post_params)
+        redirect_to posts_path, notice: "投稿を編集しました"
+      else
+        redirect_to edit_post_path, notice: "内容を確認してください"
+      end
     else
       redirect_to posts_path
     end
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_path, notice: "投稿を削除しました"
+    if @post.user_id == current_user.id
+      @post.destroy
+      redirect_to posts_path, notice: "投稿を削除しました"
+    else
+      redirect_to posts_path
+    end
   end
 
   private
