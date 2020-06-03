@@ -5,6 +5,7 @@
                 <% if @user.id == current_user.id %>
                     <h3>マイページ</h3>
                     <%= link_to "編集する", "/users/edit", class: "btn btn-primary" %>
+                    <%= link_to "マイページ編集", edit_user_path, class: "btn btn-primary" %>
                 <% else %>
                     <h3><%= @user.name %>さんのページ</h3>
                 <% end %>
