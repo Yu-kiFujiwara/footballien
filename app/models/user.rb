@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :followings, through: :following_relationships
   has_many :follower_relationships, foreign_key: "following_id", class_name: "Relationship", dependent: :destroy
   has_many :followers, through: :follower_relationships
+  has_many :rooms
+  has_many :messages
 
   enum sex: { man: 0, woman: 1}
   enum job: { player: 0, owner: 1}

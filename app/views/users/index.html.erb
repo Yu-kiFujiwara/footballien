@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="container-wrapper">
+        <h2>ユーザー一覧</h2><br/>
+        <h3>プレイヤー一覧</h3><br/>
+        <% @players.each do |p| %>
+            <li><a href="/users/<%= p.id %>"><%= p.name %></a><br/>
+        <% end %>
+        <br/><br/>
+        <h3>オーナー一覧</h3><br/>
+        <% @owners.each do |o| %>
+            <li><a href="/users/<%= o.id %>"><%= o.name %></a><br/>
+        <% end %>
+        <br/><br/>
+        <%= link_to "ホームへ戻る", root_path %>
+    </div>
+</div>

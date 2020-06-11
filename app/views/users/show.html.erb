@@ -1,13 +1,99 @@
-<% if @user.job == "player" %>
+<% if current_user?(@user) %>
     <div class="container">
         <div class="container-wrapper">
             <div class="rows">
-                <% if @user.id == current_user.id %>
-                    <h3>マイページ</h3>
-                    <%= link_to "編集する", "/users/edit", class: "btn btn-primary" %>
-                    <%= link_to "マイページ編集", edit_user_path, class: "btn btn-primary" %>
+            
+                <h3>マイページ</h3>
+                <%= link_to "編集する", "/users/edit", class: "btn btn-primary" %>
+                <%= link_to "マイページ編集", edit_user_path, class: "btn btn-primary" %><br><br>
+
+                <% if current_user.job == 'player' %>
+                    <% if @rooms.present? %>
+                        <h3>メッセージ一覧</h3>
+                        <% @rooms.each do |r| %>
+                            <% if r.messages.present? then @owner = User.find_by(id: r.owner_id) %>
+                                <li><a href="/rooms/<%= r.id %>"><%= @owner.name %></a>
+                            <% end %>
+                        <% end %>
+                    <% else %>
+                        <h4>メッセージはありません</h4>
+                    <% end %>
+                <% elsif current_user.job == 'owner' %>
+                    <% if @rooms.present? %>
+                        <h3>メッセージ一覧</h3>
+                        <% @rooms.each do |r| %>
+                            <% if r.messages.present? then @player = User.find_by(id: r.player_id) %>
+                                <li><a href="/rooms/<%= r.id %>"><%= @player.name %></a>
+                            <% end %>
+                        <% end %>
+                    <% else %>
+                        <h4>メッセージはありません</h4>
+                    <% end %>
+                <% end %>
+                <br/><br/>
+
+                <%= render 'follow_form' %>
+                <%= render 'stats' %>
+                <br />
+
+                <p>メールアドレス ： <%= @user.email %>
+                <p><%= @user.sex %>
+                <p><%= @user.location %>
+
+                <p>年齢 ：
+                <% if @user.age == nil %>
+                    <a>未設定
                 <% else %>
-                    <h3><%= @user.name %>さんのページ</h3>
+                    <a><%= @user.age %>歳
+                <% end %>
+
+                <p>プロフィール</h4>
+                <% if @user.introduction == nil %>
+                    <a>： 未設定
+                <% else %>
+                    <br /><a><%= @user.introduction %>
+                <% end %>
+                <br /><hr>
+                <h4>投稿一覧</h4>
+                <% @user.posts.each do |post| %>
+                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                    <hr>
+                <% end %>
+                <br />
+                <h4>いいね！している投稿</h4>
+                <% @user.liked_posts.each do |post| %>
+                    <%= post.user.name %>
+                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                    <hr>
+                <% end %>
+                <br />
+                <%= link_to "一覧", posts_path, class: "btn btn-primary" %>
+                <%= link_to "ユーザー一覧", users_path, class: "btn btn-primary" %>
+            </div>
+        </div>
+    </div>
+
+<% elsif current_user.id != @user.id %>
+    <div class="container">
+        <div class="container-wrapper">
+            <div class="rows">
+                
+                <h3><%= @user.name %>さんのページ</h3>
+                <% if current_user.job == @user.job %>
+                <% else %>
+                    <% if current_user.job == 'owner' %>
+                        <% if @room.messages.present? %>
+                            <%= link_to "メッセージ", room_path(@room) %>
+                        <% else %>
+                            <%= link_to "スカウトする", room_path(@room) %>
+                        <% end %>
+                    <% elsif current_user.job == 'player' %>
+                        <% if @room.messages.present? %>
+                            <%= link_to "メッセージ", room_path(@room) %>
+                        <% else %>
+                            <%= link_to "アプローチする", room_path(@room) %>
+                        <% end %>
+                    <% end %>
                 <% end %>
 
                 <%= render 'follow_form' %>
@@ -46,17 +132,8 @@
                 <% end %>
                 <br />
                 <%= link_to "一覧", posts_path, class: "btn btn-primary" %>
+                <%= link_to "ユーザー一覧", users_path, class: "btn btn-primary" %>
             </div>
-        </div>
-    </div>
-
-<% else @user.job == "owner" %>
-    <div class="container">
-        <div class="rows">
-            <h3><%= @user.name %>さんのページ</h3>
-            <%= link_to "マイページ編集", "/users/edit" %>
-            <p>メールアドレス ： <%= @user.email %>
-            <p><%= @user.location %>で活動
         </div>
     </div>
 <% end %>

@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="container-wrapper">
+        <div class="rows">
+            <% if @messages == [] %>
+                <h4>メッセージはありません</h4><br>
+            <% end %>
+            <% if @messages.present? %>
+                <% @first = @messages[0] %>
+                <% if @first.user_id == current_user.id %>
+                    <% if current_user.job == 'owner' %>
+                        <h3>スカウトしました！</h3>
+                    <% elsif current_user.job == 'player' %>
+                        <h3>アプローチしました！</h3>
+                    <% end %>
+                <% else %>
+                    <% if current_user.job == 'owner' %>
+                        <h3>アプローチが来ました！！</h3>
+                    <% elsif current_user.job == 'player' %>
+                        <h3>スカウトが来ました！！</h3>
+                    <% end %>
+                <% end %>
+            <% end %><br />
+
+            <% @messages.each do |m| %>
+                <% if current_user.job == 'owner' %>
+                    <% if m.user.job == 'owner' %>
+                        <div class="left-message">
+                            <%= m.user.name %>：<%= m.content %><br />
+                        </div>
+                    <% elsif m.user.job == 'player' %>
+                        <div class="right-message">
+                            <%= m.content %>：<%= m.user.name %><br />
+                        </div>
+                    <% end %>
+                <% elsif current_user.job == 'player' %>
+                    <% if m.user.job == 'player' %>
+                        <div class="left-message">
+                            <%= m.user.name %>：<%= m.content %><br />
+                        </div>
+                    <% elsif m.user.job == 'owner' %>
+                        <div class="right-message">
+                            <%= m.content %>：<%= m.user.name %><br />
+                        </div>
+                    <% end %>
+                <% end %>
+                <hr>
+            <% end %>
+
+            <%= form_for [@room, @message] do |f| %>
+                <div class="field">
+                    <%= f.label "メッセージ" %><br />
+                    <%= f.text_area :content, rows: 3, class: 'form-control' %><br>
+                </div>
+                <%= button_to "送信する", room_messages_path(@room), class: "btn btn-primary" %><br>
+            <% end %>
+
+            <%= link_to '戻る', "/users/#{current_user.id}", class: "btn btn-outline-primary" %>
+        </div>
+    </div>
+</div>

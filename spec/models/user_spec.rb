@@ -9,12 +9,12 @@ describe User, type: :model do
             end
             it '必須項目のみ埋められた場合' do
                 user = User.create(
-                name:'owner',
-                email:'owner@example.com',
-                password:'password',
-                password_confirmation:'password',
-                job:'owner',
-                sex:'man'
+                    name:'owner',
+                    email:'owner@example.com',
+                    password:'password',
+                    password_confirmation:'password',
+                    job:'owner',
+                    sex:'man'
                 )
                 expect(user).to be_valid
             end
@@ -22,51 +22,51 @@ describe User, type: :model do
         context '失敗する場合' do
             it 'nameが未記入' do
                 user = User.create(
-                email:'owner@example.com',
-                password:'password',
-                password_confirmation:'password',
-                job:'owner',
-                sex:'man'
+                    email:'owner@example.com',
+                    password:'password',
+                    password_confirmation:'password',
+                    job:'owner',
+                    sex:'man'
                 )
                 expect(user).to_not be_valid
             end
             it 'emailが未記入' do
                 user = User.create(
-                name:'owner',
-                password:'password',
-                password_confirmation:'password',
-                job:'owner',
-                sex:'man'
+                    name:'owner',
+                    password:'password',
+                    password_confirmation:'password',
+                    job:'owner',
+                    sex:'man'
                 )
                 expect(user).to_not be_valid
             end
             it 'passwordが未記入' do
                 user = User.create(
-                name:'owner',
-                email:'owner@example.com',
-                password_confirmation:'password',
-                job:'owner',
-                sex:'man'
+                    name:'owner',
+                    email:'owner@example.com',
+                    password_confirmation:'password',
+                    job:'owner',
+                    sex:'man'
                 )
                 expect(user).to_not be_valid
             end
             it 'jobが未記入' do
                 user = User.create(
-                name:'owner',
-                email:'owner@example.com',
-                password:'password',
-                password_confirmation:'password',
-                sex:'man'
+                    name:'owner',
+                    email:'owner@example.com',
+                    password:'password',
+                    password_confirmation:'password',
+                    sex:'man'
                 )
                 expect(user).to_not be_valid
             end
             it 'sexが未記入' do
                 user = User.create(
-                name:'owner',
-                email:'owner@example.com',
-                password:'password',
-                password_confirmation:'password',
-                job:'owner',
+                    name:'owner',
+                    email:'owner@example.com',
+                    password:'password',
+                    password_confirmation:'password',
+                    job:'owner',
                 )
                 expect(user).to_not be_valid
             end
