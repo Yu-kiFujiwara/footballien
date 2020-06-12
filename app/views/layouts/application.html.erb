@@ -10,14 +10,21 @@
 
   <body>
     <header>
-    <%= link_to "Footballien", posts_path %>
-      <% if current_user == nil %>
-      <% else %>
-        <div class="right">
-          <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-          <%= link_to "マイページ", "/users/#{current_user.id}", class: "btn btn-primary" %>
+      <div class="header">
+        <div class="header-left">
+          <%= link_to "Footballien", posts_path, class: "btn btn-outline-primary" %>
         </div>
-      <% end %>
+        <% if current_user == nil %>
+        <% else %>
+          <div class="header-center">
+            <%= link_to "post", posts_path, class: "btn btn-primary" %>
+            <%= link_to "マイページ", "/users/#{current_user.id}", class: "btn btn-primary" %>
+          </div>
+          <div class="header-right">
+            <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      </div>
     </header>
 
     <main>
