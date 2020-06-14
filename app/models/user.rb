@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable  
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:twitter] # TwitterAPI認証用
+
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
@@ -27,7 +29,6 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :job, presence: true
-  validates :sex, presence: true
 
 
   def already_liked?(post)
@@ -42,6 +43,29 @@ class User < ApplicationRecord
   def unfollow!(other_user)
     following_relationships.find_by(following_id: other_user.id).destroy
   end
+
+  # TwitterAPI用 (ユーザー情報があれば探し、なければ作成)
+  def self.find_for_oauth(auth)
+    user = User.find_by(uid: auth.uid, provider: auth.provider)
+    unless user
+      user = User.create(
+        uid: auth.uid,
+        provider: auth.provider,
+        name: auth[:info][:name],
+        email: auth.[:info][:email],
+        job: "player",
+        sex: "man",
+        password: Devise.friendly_token[0, 20]
+      )
+    end
+    binding.pry
+    user
+  end
+
+  def self.dummy_email(auth)
+    "#{auth.uid}-#{auth.provider}@example.com"
+  end
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 end

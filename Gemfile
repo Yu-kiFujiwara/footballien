@@ -68,6 +68,10 @@ gem 'bootstrap'
 gem 'ransack'
 gem 'font-awesome-sass'
 gem 'jquery-rails'
+gem 'dotenv-rails'
+gem 'omniauth'
+gem 'omniauth-twitter'
+
 
 group :development, :test do
   gem "rspec-rails"
