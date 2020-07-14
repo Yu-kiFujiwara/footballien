@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 2020_06_14_053122) do
     t.datetime "updated_at", null: false
     t.string "name", limit: 100, default: "", null: false
     t.integer "age"
-    t.integer "sex", null: false
+    t.integer "sex"
     t.integer "job", null: false
     t.integer "location"
     t.text "introduction"

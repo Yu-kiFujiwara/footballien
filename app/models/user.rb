@@ -52,9 +52,8 @@ class User < ApplicationRecord
         uid: auth.uid,
         provider: auth.provider,
         name: auth[:info][:name],
-        email: auth.[:info][:email],
+        email: auth[:info][:email],
         job: "player",
-        sex: "man",
         password: Devise.friendly_token[0, 20]
       )
     end
