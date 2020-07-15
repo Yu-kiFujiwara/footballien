@@ -71,7 +71,8 @@ gem 'jquery-rails'
 gem 'dotenv-rails'
 gem 'omniauth'
 gem 'omniauth-twitter'
-
+gem 'carrierwave'
+gem 'fog'
 
 group :development, :test do
   gem "rspec-rails"
