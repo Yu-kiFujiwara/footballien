@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :rooms
   has_many :messages
 
+  mount_uploader :image, ImageUploader
+
   enum sex: { man: 0, woman: 1}
   enum job: { player: 0, owner: 1}
   enum location: {

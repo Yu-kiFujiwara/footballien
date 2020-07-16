@@ -72,6 +72,7 @@ gem 'dotenv-rails'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'carrierwave'
+gem 'mini_magick'
 gem 'fog'
 
 group :development, :test do

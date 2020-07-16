@@ -31,6 +31,9 @@
                     <% end %>
                 <% end %>
                 <br/><br/>
+                
+                <%= image_tag @user.image.to_s %><br/>
+
 
                 <%= render 'follow_form' %>
                 <%= render 'stats' %>
@@ -95,6 +98,9 @@
                         <% end %>
                     <% end %>
                 <% end %>
+
+                <%= image_tag @user.image.to_s %><br/>
+
 
                 <%= render 'follow_form' %>
                 <%= render 'stats' %>
