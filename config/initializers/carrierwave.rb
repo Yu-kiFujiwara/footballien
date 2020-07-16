@@ -8,6 +8,8 @@ unless Rails.env.development? || Rails.env.test?
       }
   
       config.fog_directory  = 'footballien-photo'
-      config.cache_storage = :fog
+      config.storage = :fog
+      config.fog_provider = 'fog/aws'
+      config.asset_host = 'https://footballien-photo.s3.amazonaws.com'
     end
 end
