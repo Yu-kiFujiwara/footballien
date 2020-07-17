@@ -7,14 +7,13 @@ class ImageUploader < CarrierWave::Uploader::Base
   # storage :file
   # storage :fog
 
-  # developmentとtest環境はlocalファイル、それ以外（production・staging）はS3を使用
-  if Rails.env.development?
-    storage :file
-  elsif Rails.env.test?
-    storage :file
-  else
+  #production環境ではS3、それ以外はlocalファイルを使用
+  if Rails.env.production?
     storage :fog
+  else
+    storage :file
   end
+  
 
   process resize_to_fit: [100, 100]
   # Override the directory where uploaded files will be stored.
