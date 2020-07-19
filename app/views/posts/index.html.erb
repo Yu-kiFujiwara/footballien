@@ -4,30 +4,26 @@
     <div class="container">
       <div class="container-wrapper">
         <div class="rows">
-          <h4> <%= current_user.name %>さんがログインしています</h4>
-          <h4> メールアドレス： <%= current_user.email %> </h4>
-          <%= link_to "新規投稿", new_post_path, class: "btn btn-primary" %>
-          <%= link_to "マイページ", "/users/#{@user.id}", class: "btn btn-primary" %>
-          <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-danger" %> 
-          <hr>
           <%= search_form_for @q do |f| %>
-            <%= f.label :name, "投稿", class: "col-sm-1 col-form-label" %>
+            <%= f.label :name, "Post", class: "col-sm-1 col-form-label" %>
             <%= f.search_field :content_cont, class: "col-sm-9 col-form-control" %>
-            <%= f.submit "検索", class: "btn btn-primary col-sm-1 col-form-control"  %>
+            <%= f.submit "Search", class: "btn btn-primary col-sm-1 col-form-control"  %>
           <% end %>
           <hr><hr>
-          <tbody>
-            <% @posts.each do |post| %>
+          
+          <% @posts.each do |post| %>
+            <div class="post_bg">
+              <%= image_tag post.user.image.to_s %><br/>
+
               <a>投稿者：</a><a href="/users/<%= post.user_id %>"><%= post.user.name %><br />
               <a href="/posts/<%= post.id %>"><%= post.content %></a>
               
               <div id="likes_buttons_<%= post.id %>">
                 <%= render partial: 'likes/like', locals: { post: post } %>
               </div>
-
-              <hr>
-            <% end %>
-          </tbody>
+            </div><br>
+          <% end %>
+          
         </div>
       </div>
     </div>

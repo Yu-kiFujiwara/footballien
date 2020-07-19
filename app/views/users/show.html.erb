@@ -2,10 +2,15 @@
     <div class="container">
         <div class="container-wrapper">
             <div class="rows">
-            
-                <h3>マイページ</h3>
-                <%= link_to "編集する", "/users/edit", class: "btn btn-primary" %>
-                <%= link_to "マイページ編集", edit_user_path, class: "btn btn-primary" %><br><br>
+                <div class="center">
+                    <%= image_tag @user.image.to_s %><br/><br/>
+                    <h3><%= @user.name %></h3>
+                    <%= render 'follow_form' %>
+                    <%= render 'stats' %>
+                    <i class="fas fa-cog fa-lg"><%= link_to "Edit", "/users/edit" %></i>
+                    <i class="fas fa-user-edit fa-lg"><%= link_to "My Page", edit_user_path %></i>
+
+                </div><br><br>
 
                 <% if current_user.job == 'player' %>
                     <% if @rooms.present? %>
@@ -32,36 +37,41 @@
                 <% end %>
                 <br/><br/>
                 
-                <%= image_tag @user.image.to_s %><br/>
 
+                <h3><i class="fas fa-user-circle">自己紹介</i></h3>
+                <a><%= @user.sex %></a><br>
+                <a>出身地：<%= @user.location %></a><br>
 
-                <%= render 'follow_form' %>
-                <%= render 'stats' %>
-                <br />
-
-                <p>メールアドレス ： <%= @user.email %>
-                <p><%= @user.sex %>
-                <p><%= @user.location %>
-
-                <p>年齢 ：
+                <a>年齢 ：</a>
                 <% if @user.age == nil %>
-                    <a>未設定
+                    <a>未設定</a>
                 <% else %>
-                    <a><%= @user.age %>歳
-                <% end %>
+                    <a><%= @user.age %>歳</a>
+                <% end %><br>
 
-                <p>プロフィール</h4>
+                <a>プロフィール</a>
                 <% if @user.introduction == nil %>
-                    <a>： 未設定
+                    <a>： 未設定</a>
                 <% else %>
-                    <br /><a><%= @user.introduction %>
-                <% end %>
+                    <br /><a><%= @user.introduction %></a>
+                <% end %><br>
                 <br /><hr>
-                <h4>投稿一覧</h4>
+                <h4>投稿一覧</h4><hr>
+                
                 <% @user.posts.each do |post| %>
-                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
-                    <hr>
+                    <div class="post_bg">
+                        <div class="post_white">
+                            <%= image_tag post.user.image.to_s %><br/>
+                            <a>投稿者：</a><a href="/users/<%= post.user_id %>"><%= post.user.name %><br />
+                            <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                            
+                            <div id="likes_buttons_<%= post.id %>">
+                                <%= render partial: 'likes/like', locals: { post: post } %>
+                            </div>
+                        </div>
+                    </div><br>
                 <% end %>
+                
                 <br />
                 <h4>いいね！している投稿</h4>
                 <% @user.liked_posts.each do |post| %>
@@ -106,30 +116,38 @@
                 <%= render 'stats' %>
                 <br />
 
-                <p>メールアドレス ： <%= @user.email %>
-                <p><%= @user.sex %>
-                <p><%= @user.location %>
+                <a><%= @user.sex %></a><br>
+                <a><%= @user.location %></a><br>
 
-                <p>年齢 ：
+                <a>年齢 ：</a>
                 <% if @user.age == nil %>
-                    <a>未設定
+                    <a>未設定</a>
                 <% else %>
-                    <a><%= @user.age %>歳
-                <% end %>
+                    <a><%= @user.age %>歳</a>
+                <% end %><br>
 
-                <p>プロフィール</h4>
+                <a>プロフィール</a>
                 <% if @user.introduction == nil %>
-                    <a>： 未設定
+                    <a>： 未設定</a>
                 <% else %>
-                    <br /><a><%= @user.introduction %>
-                <% end %>
+                    <br /><a><%= @user.introduction %></a>
+                <% end %><br>
                 <br /><hr>
-                <h4>投稿一覧</h4>
+                <h4>投稿一覧</h4><hr>
                 <% @user.posts.each do |post| %>
-                    <a href="/posts/<%= post.id %>"><%= post.content %></a>
-                    <hr>
+                    <div class="post_bg">
+                        <div class="post_white">
+                            <%= image_tag post.user.image.to_s %><br/>
+                            <a>投稿者：</a><a href="/users/<%= post.user_id %>"><%= post.user.name %><br />
+                            <a href="/posts/<%= post.id %>"><%= post.content %></a>
+                            
+                            <div id="likes_buttons_<%= post.id %>">
+                                <%= render partial: 'likes/like', locals: { post: post } %>
+                            </div>
+                        </div><hr>
+                    </div>
                 <% end %>
-                <br />
+                
                 <h4>いいね！している投稿</h4>
                 <% @user.liked_posts.each do |post| %>
                     <%= post.user.name %>

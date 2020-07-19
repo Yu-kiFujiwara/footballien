@@ -71,3 +71,19 @@ main {
     margin-left: 20px;
     float: none;
 }
+a {
+    font-size: 20px;
+}
+.center {
+    text-align: center;
+}
+.right {
+    display: table;
+    float: right;
+}
+.post_bg {
+    border: solid 1px black;
+    padding: 30px;
+    border-radius: 20px;
+    opacity: 1;
+}
