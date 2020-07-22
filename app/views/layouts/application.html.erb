@@ -17,9 +17,11 @@
         <% if current_user == nil %>
         <% else %>
           <div class="header-center">
-            <i class="fas fa-home fa-lg"> <%= link_to "Home", posts_path %></i>
-            <i class="fas fa-user-circle fa-lg"> <%= link_to "My Page", "/users/#{current_user.id}" %></i>
-            <i class="fas fa-edit fa-lg"> <%= link_to "New Post", new_post_path %></i>
+            <ul id="nav">
+              <li><i class="fas fa-home fa-lg"> <%= link_to "Home", posts_path %></i></li>
+              <li><i class="fas fa-user-circle fa-lg"> <%= link_to "My Page", "/users/#{current_user.id}" %></i></li>
+              <li><i class="fas fa-edit fa-lg"> <%= link_to "New Post", new_post_path %></i></li>
+            </ul>
           </div>
           <div class="header-right">
             <%= link_to "LogOut", destroy_user_session_path, method: :delete %>
