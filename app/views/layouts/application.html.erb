@@ -12,7 +12,9 @@
     <header>
       <div class="header">
         <div class="header-left">
-          <%= link_to "Footballien", posts_path, class: "btn btn-outline-primary" %>
+          <div class="home_link">
+            <%= link_to "Footballien", posts_path %>
+          </div>
         </div>
         <% if current_user == nil %>
         <% else %>
@@ -24,7 +26,9 @@
             </ul>
           </div>
           <div class="header-right">
-            <%= link_to "LogOut", destroy_user_session_path, method: :delete %>
+            <div class="logout">
+              <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+            </div>
           </div>
         <% end %>
       </div>
